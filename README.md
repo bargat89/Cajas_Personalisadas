@@ -1,0 +1,1593 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Cajas Personalizadas · Catálogo</title>
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
+    }
+
+    :root {
+      --principal: #C49B3D;
+      --principal-oscuro: #A67C2E;
+      --principal-claro: #E8D5A3;
+      --secundario: #2C2420;
+      --fondo: #F7F3EE;
+      --fondo-oscuro: #EAE3DA;
+      --blanco: #FFFFFF;
+      --texto: #2C2420;
+      --texto-claro: #5A4F47;
+      --exito: #25D366;
+      --sombra: 0 12px 28px rgba(44, 36, 32, 0.08);
+      --radio: 20px;
+      --transicion: 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    }
+
+    body {
+      background: var(--fondo);
+      color: var(--texto);
+    }
+
+    ::-webkit-scrollbar { width: 8px; }
+    ::-webkit-scrollbar-track { background: var(--fondo-oscuro); }
+    ::-webkit-scrollbar-thumb { background: var(--principal); border-radius: 10px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--principal-oscuro); }
+
+    /* ---------- INTRO ---------- */
+    #intro {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 2rem 1.5rem;
+      transition: transform 0.8s cubic-bezier(0.77, 0, 0.175, 1), opacity 0.8s ease;
+      background: radial-gradient(circle at 50% 50%, #FAF6F0 0%, #EAE3DA 100%);
+      overflow: hidden;
+    }
+
+    #intro::before, #intro::after {
+      content: '';
+      position: absolute;
+      width: 380px;
+      height: 380px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(196, 155, 61, 0.28) 0%, rgba(255, 255, 255, 0) 70%);
+      animation: flotarLuz 10s infinite alternate ease-in-out;
+      pointer-events: none;
+    }
+    #intro::before { top: -100px; left: -100px; }
+    #intro::after { bottom: -100px; right: -100px; animation-delay: -5s; }
+
+    @keyframes flotarLuz {
+      0% { transform: translate(0, 0) scale(1); }
+      100% { transform: translate(70px, 50px) scale(1.25); }
+    }
+
+    #intro.hidden {
+      transform: scale(1.08);
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .intro-card {
+      position: relative;
+      z-index: 2;
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      border: 1px solid rgba(255, 255, 255, 0.85);
+      padding: 3rem 2.2rem;
+      border-radius: 32px;
+      box-shadow: 0 25px 50px rgba(44, 36, 32, 0.12);
+      max-width: 520px;
+      width: 100%;
+      animation: aparecerSoft 1s ease-out;
+      transition: box-shadow 0.5s ease, transform 0.5s ease;
+    }
+
+    /* Halo ambiental que respira detrás de la tarjeta desde que carga la pantalla */
+    .intro-card::before {
+      content: '';
+      position: absolute;
+      inset: -45px;
+      z-index: -1;
+      border-radius: 50px;
+      background: radial-gradient(circle, rgba(196, 155, 61, 0.38) 0%, rgba(196, 155, 61, 0.08) 55%, rgba(196, 155, 61, 0) 75%);
+      animation: respirarResplandor 3.6s ease-in-out infinite;
+      pointer-events: none;
+    }
+
+    @keyframes respirarResplandor {
+      0%, 100% { opacity: 0.55; transform: scale(0.94); }
+      50% { opacity: 1; transform: scale(1.07); }
+    }
+
+    .intro-card.resplandor-card {
+      box-shadow: 0 0 0 4px rgba(196, 155, 61, 0.25), 0 0 90px 25px rgba(196, 155, 61, 0.65), 0 25px 50px rgba(44, 36, 32, 0.12);
+      transform: scale(1.015);
+    }
+
+    .intro-logo {
+      width: 155px;
+      height: 155px;
+      background: var(--blanco);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 3px solid var(--principal);
+      margin: 0 auto 1.8rem;
+      overflow: hidden;
+      box-shadow: 0 0 25px rgba(196, 155, 61, 0.35);
+      animation: pulsoBrillo 3s infinite alternate;
+    }
+
+    @keyframes pulsoBrillo {
+      0% { box-shadow: 0 0 15px rgba(196, 155, 61, 0.25); transform: scale(1); }
+      100% { box-shadow: 0 0 35px rgba(196, 155, 61, 0.55); transform: scale(1.03); }
+    }
+
+    .intro-logo img { width: 100%; height: 100%; object-fit: cover; }
+
+    .intro-titulo {
+      font-size: 2.8rem;
+      font-weight: 700;
+      color: var(--principal);
+      margin-bottom: 0.3rem;
+    }
+
+    .intro-sub {
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: var(--texto-claro);
+      margin-bottom: 2.2rem;
+    }
+
+    .btn-entrar {
+      position: relative;
+      background: linear-gradient(135deg, var(--principal) 0%, var(--principal-oscuro) 100%);
+      border: none;
+      color: var(--blanco);
+      padding: 1rem 3.5rem;
+      border-radius: 60px;
+      font-size: 1.15rem;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 10px 25px rgba(196, 155, 61, 0.35);
+      transition: var(--transicion);
+      overflow: hidden;
+    }
+    .btn-entrar:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 14px 30px rgba(196, 155, 61, 0.45);
+    }
+    .btn-entrar.pulso {
+      animation: pulsoBoton 0.6s ease-out;
+    }
+    @keyframes pulsoBoton {
+      0% { box-shadow: 0 0 0 0 rgba(196, 155, 61, 0.7), 0 10px 25px rgba(196, 155, 61, 0.35); }
+      100% { box-shadow: 0 0 0 55px rgba(196, 155, 61, 0), 0 10px 25px rgba(196, 155, 61, 0.35); }
+    }
+
+    /* Resplandor expansivo que nace del botón al hacer clic */
+    .flash-resplandor {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(255, 250, 235, 0.95) 0%, rgba(196, 155, 61, 0.55) 35%, rgba(196, 155, 61, 0) 70%);
+      pointer-events: none;
+      z-index: 9998;
+      transform: translate(-50%, -50%) scale(0);
+      opacity: 0;
+    }
+    .flash-resplandor.activo {
+      animation: expandirResplandor 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+    @keyframes expandirResplandor {
+      0% { transform: translate(-50%, -50%) scale(0); opacity: 1; }
+      55% { opacity: 0.9; }
+      100% { transform: translate(-50%, -50%) scale(60); opacity: 0; }
+    }
+
+    /* ---------- HEADER FIJO ---------- */
+    .header-fijo {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 500;
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      padding: 0.65rem 1.8rem;
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 2px solid var(--principal);
+      box-shadow: var(--sombra);
+    }
+    .header-fijo.visible { display: flex; }
+
+    .header-left { display: flex; align-items: center; gap: 14px; }
+    .logo-mini {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      border: 2px solid var(--principal);
+      overflow: hidden;
+      background: #fff;
+    }
+    .logo-mini img { width: 100%; height: 100%; object-fit: cover; }
+    .header-titulo { font-size: 1.4rem; font-weight: 700; color: var(--principal); }
+
+    .header-carrito {
+      background: var(--secundario);
+      color: var(--principal);
+      border: none;
+      padding: 0.5rem 1.4rem;
+      border-radius: 40px;
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: var(--transicion);
+    }
+    .header-carrito:hover { background: #1a1614; transform: scale(1.02); }
+    .badge-carrito {
+      background: var(--principal);
+      color: var(--blanco);
+      border-radius: 30px;
+      padding: 0 9px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      line-height: 1.8;
+      transition: transform 0.22s ease;
+    }
+
+    /* ---------- CATÁLOGO & BARRA DE OPCIONES ---------- */
+    .catalogo-wrapper {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 95px 1.5rem 2.5rem;
+      display: none;
+    }
+    .catalogo-wrapper.visible { display: block; animation: aparecerSoft 0.8s ease-out; }
+
+    .barra-opciones-wrapper {
+      position: sticky;
+      top: 68px;
+      z-index: 400;
+      padding: 0.8rem 0 1.2rem;
+      background: linear-gradient(180deg, var(--fondo) 75%, rgba(247, 243, 238, 0) 100%);
+      display: flex;
+      flex-direction: column;
+      gap: 0.7rem;
+    }
+
+    .barra-busqueda {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--blanco);
+      border: 1px solid rgba(196, 155, 61, 0.3);
+      border-radius: 50px;
+      padding: 0.55rem 1.1rem;
+      max-width: 420px;
+      margin: 0 auto;
+      width: 100%;
+      box-shadow: 0 6px 16px rgba(44, 36, 32, 0.05);
+    }
+    .barra-busqueda i { color: var(--principal-oscuro); }
+    .barra-busqueda input {
+      border: none;
+      outline: none;
+      flex: 1;
+      font-size: 0.95rem;
+      background: transparent;
+      color: var(--texto);
+    }
+    .barra-busqueda .btn-limpiar-busqueda {
+      border: none;
+      background: transparent;
+      color: var(--texto-claro);
+      cursor: pointer;
+      display: none;
+      font-size: 0.9rem;
+    }
+    .barra-busqueda.con-texto .btn-limpiar-busqueda { display: block; }
+
+    .barra-opciones {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 8px 12px;
+      background: rgba(255, 255, 255, 0.78);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border: 1px solid rgba(196, 155, 61, 0.25);
+      border-radius: 60px;
+      box-shadow: 0 10px 25px rgba(44, 36, 32, 0.06);
+      overflow-x: auto;
+      white-space: nowrap;
+      scrollbar-width: none;
+    }
+    .barra-opciones::-webkit-scrollbar { display: none; }
+
+    .btn-opcion {
+      background: transparent;
+      border: none;
+      padding: 0.65rem 1.4rem;
+      border-radius: 50px;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--texto-claro);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      position: relative;
+      overflow: hidden;
+      transition: var(--transicion);
+      flex-shrink: 0;
+    }
+    .btn-opcion i { font-size: 0.9rem; color: var(--principal-oscuro); transition: var(--transicion); }
+    .btn-opcion:hover {
+      color: var(--principal-oscuro);
+      background: rgba(196, 155, 61, 0.12);
+      transform: translateY(-2px);
+    }
+    .btn-opcion.activo {
+      background: linear-gradient(135deg, var(--principal) 0%, var(--principal-oscuro) 100%);
+      color: var(--blanco);
+      box-shadow: 0 6px 18px rgba(196, 155, 61, 0.4);
+      transform: scale(1.04);
+    }
+    .btn-opcion.activo i { color: var(--blanco); }
+
+    .btn-opcion.activo::after {
+      content: '';
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      width: 200%;
+      height: 200%;
+      background: linear-gradient(60deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+      transform: rotate(30deg) translateY(-100%);
+      animation: brilloBoton 3.5s infinite;
+    }
+
+    @keyframes brilloBoton {
+      0% { transform: rotate(30deg) translateY(-120%); }
+      25%, 100% { transform: rotate(30deg) translateY(120%); }
+    }
+
+    .resultado-info {
+      text-align: center;
+      font-size: 0.88rem;
+      color: var(--texto-claro);
+      margin: -0.4rem 0 1.2rem;
+    }
+
+    /* ---------- GRID & ANIMACIONES DE ENTRADA ---------- */
+    .grid-cajas {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.8rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .sin-resultados {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--texto-claro);
+    }
+    .sin-resultados i { font-size: 2.2rem; color: var(--principal); margin-bottom: 0.8rem; display: block; }
+
+    .caja-card {
+      background: var(--blanco);
+      border-radius: var(--radio);
+      padding: 1.2rem;
+      box-shadow: var(--sombra);
+      text-align: center;
+      transition: var(--transicion);
+      border: 1px solid #f0ebe5;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      opacity: 0;
+      animation: tarjetaEntrada 0.5s ease-out forwards;
+    }
+
+    @keyframes tarjetaEntrada {
+      from {
+        opacity: 0;
+        transform: translateY(24px) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .caja-card:hover {
+      transform: translateY(-6px);
+      border-color: var(--principal);
+      box-shadow: 0 20px 38px rgba(44, 36, 32, 0.12);
+    }
+
+    .caja-img {
+      height: 180px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 0.9rem;
+      overflow: hidden;
+      background: var(--fondo-oscuro);
+    }
+
+    .caja-img img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: var(--transicion);
+    }
+
+    .caja-card:hover .caja-img img { transform: scale(1.05); }
+
+    .caja-tag {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: 0.8px;
+      color: var(--principal-oscuro);
+      margin-bottom: 0.25rem;
+    }
+
+    .caja-nombre {
+      font-weight: 700;
+      font-size: 1.05rem;
+      margin-bottom: 0.9rem;
+      color: var(--secundario);
+      min-height: 2.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-ver {
+      background: var(--principal);
+      border: none;
+      color: var(--blanco);
+      padding: 0.65rem 0;
+      width: 100%;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 0.95rem;
+      cursor: pointer;
+      transition: var(--transicion);
+    }
+    .btn-ver:hover { background: var(--principal-oscuro); }
+
+    /* ---------- SECCIÓN MANDAR ESTILO ---------- */
+    .seccion-estilo {
+      background: linear-gradient(135deg, var(--blanco) 0%, var(--fondo) 100%);
+      border-radius: var(--radio);
+      padding: 2.5rem 1.8rem;
+      text-align: center;
+      box-shadow: var(--sombra);
+      border: 1px solid #f0ebe5;
+    }
+    .seccion-estilo h3 {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--secundario);
+      margin-bottom: 0.4rem;
+    }
+    .seccion-estilo h3 i { color: var(--principal); margin-right: 8px; }
+    .seccion-estilo p {
+      color: var(--texto-claro);
+      margin-bottom: 1.4rem;
+      font-size: 1.05rem;
+    }
+    .btn-estilo {
+      background: var(--secundario);
+      color: var(--principal);
+      border: none;
+      padding: 0.8rem 2.8rem;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 1.05rem;
+      cursor: pointer;
+      transition: var(--transicion);
+    }
+    .btn-estilo:hover { background: #1a1614; transform: scale(1.02); }
+
+    /* ---------- MODALES ---------- */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(44, 36, 32, 0.65);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 2000;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.2rem;
+    }
+    .modal-overlay.abierto { display: flex; }
+
+    .modal-card {
+      background: var(--blanco);
+      max-width: 540px;
+      width: 100%;
+      border-radius: 28px;
+      padding: 1.8rem 1.8rem 2rem;
+      box-shadow: 0 30px 60px rgba(44, 36, 32, 0.2);
+      max-height: 94vh;
+      overflow-y: auto;
+      position: relative;
+      animation: aparecerSoft 0.4s ease-out;
+    }
+    .modal-card .cerrar {
+      position: absolute;
+      top: 14px;
+      right: 18px;
+      background: none;
+      border: none;
+      font-size: 1.8rem;
+      color: var(--texto-claro);
+      cursor: pointer;
+      transition: var(--transicion);
+    }
+    .modal-card .cerrar:hover { transform: rotate(90deg); color: var(--secundario); }
+
+    .modal-titulo { font-size: 1.7rem; font-weight: 700; color: var(--secundario); padding-right: 1.6rem; }
+
+    .imagen-compra {
+      width: 100%;
+      height: 250px;
+      border-radius: 16px;
+      overflow: hidden;
+      margin: 0.9rem 0 1.2rem;
+      background: var(--fondo-oscuro);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .imagen-compra img { width: 100%; height: 100%; object-fit: cover; }
+
+    .campo { margin-bottom: 1rem; }
+    .campo label {
+      display: block;
+      font-weight: 600;
+      font-size: 0.88rem;
+      margin-bottom: 4px;
+      color: var(--texto-claro);
+    }
+    .campo select {
+      width: 100%;
+      padding: 0.65rem 0.8rem;
+      border-radius: 12px;
+      border: 1px solid #ddd8d0;
+      background: var(--blanco);
+      font-size: 0.95rem;
+      color: var(--texto);
+      appearance: none;
+      background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="%239a8a7a" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>');
+      background-repeat: no-repeat;
+      background-position: right 1rem center;
+    }
+    .campo select:focus {
+      border-color: var(--principal);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(196, 155, 61, 0.15);
+    }
+
+    .fila-doble {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .selector-cantidad {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      background: var(--fondo);
+      border-radius: 14px;
+      padding: 0.5rem;
+    }
+    .selector-cantidad button {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      border: none;
+      background: var(--blanco);
+      box-shadow: 0 2px 6px rgba(44,36,32,0.1);
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--principal-oscuro);
+      cursor: pointer;
+    }
+    .selector-cantidad button:hover { background: var(--principal-claro); }
+    .selector-cantidad span { font-size: 1.15rem; font-weight: 700; min-width: 24px; text-align: center; }
+
+    .campo-vinilo { margin-bottom: 1rem; }
+    .toggle-vinilo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      font-size: 0.92rem;
+      color: var(--texto);
+      font-weight: 600;
+      background: var(--fondo);
+      padding: 0.75rem 0.9rem;
+      border-radius: 14px;
+      border: 1px solid transparent;
+      transition: var(--transicion);
+    }
+    .toggle-vinilo:has(input:checked) {
+      border-color: rgba(196, 155, 61, 0.5);
+      background: rgba(196, 155, 61, 0.1);
+    }
+    .toggle-vinilo input { width: 18px; height: 18px; accent-color: var(--principal); cursor: pointer; flex-shrink: 0; }
+    .toggle-vinilo strong { color: var(--principal-oscuro); }
+
+    .vinilo-detalle {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.35s ease, margin-top 0.35s ease, opacity 0.3s ease;
+      opacity: 0;
+      margin-top: 0;
+    }
+    .vinilo-detalle.abierto {
+      max-height: 320px;
+      opacity: 1;
+      margin-top: 0.9rem;
+    }
+    .vinilo-detalle input[type="text"] {
+      width: 100%;
+      padding: 0.65rem 0.8rem;
+      border-radius: 12px;
+      border: 1px solid #ddd8d0;
+      font-size: 0.95rem;
+      color: var(--texto);
+      background: var(--blanco);
+    }
+    .vinilo-detalle input[type="text"]:focus {
+      border-color: var(--principal);
+      outline: none;
+      box-shadow: 0 0 0 3px rgba(196, 155, 61, 0.15);
+    }
+    .vinilo-detalle .nota-caracteres {
+      font-size: 0.75rem;
+      color: var(--texto-claro);
+      text-align: right;
+      margin-top: 3px;
+    }
+
+    .precio-grande {
+      font-size: 2.1rem;
+      font-weight: 700;
+      color: var(--principal);
+      text-align: center;
+      padding: 0.6rem 0 0.2rem;
+      border-top: 1px solid #eee;
+    }
+    .precio-grande small {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--texto-claro);
+    }
+
+    .boton-agregar {
+      background: var(--secundario);
+      color: var(--blanco);
+      border: none;
+      width: 100%;
+      padding: 0.9rem;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 1.05rem;
+      margin-top: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: var(--transicion);
+    }
+    .boton-agregar:hover { background: #1a1614; }
+    .boton-agregar:disabled { opacity: 0.6; cursor: not-allowed; }
+
+    /* ---------- CARRITO ---------- */
+    .carrito-header-fila {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+    .btn-vaciar-carrito {
+      background: transparent;
+      border: 1px solid #e2b9b9;
+      color: #b23a3a;
+      border-radius: 40px;
+      padding: 0.35rem 0.9rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: var(--transicion);
+    }
+    .btn-vaciar-carrito:hover { background: #fbeaea; }
+
+    .cart-item {
+      border-bottom: 1px solid #eee;
+      padding: 0.8rem 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+      animation: aparecerSoft 0.3s ease-out;
+    }
+    .cart-item .info strong { display: block; color: var(--secundario); }
+    .cart-item .info .detalle { font-size: 0.82rem; color: var(--texto-claro); }
+    .cart-item .info .subtotal { font-size: 0.85rem; color: var(--principal-oscuro); font-weight: 700; margin-top: 2px; }
+    .cart-item .acciones { display: flex; align-items: center; gap: 8px; }
+    .cart-item .acciones button {
+      background: var(--fondo);
+      border: 1px solid #ddd8d0;
+      border-radius: 8px;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .cart-item .acciones .btn-eliminar {
+      background: transparent;
+      border: none;
+      color: #cc4444;
+      cursor: pointer;
+      font-size: 1.1rem;
+      margin-left: 4px;
+    }
+    .cart-total {
+      font-size: 1.5rem;
+      font-weight: 700;
+      text-align: right;
+      border-top: 2px solid var(--principal);
+      padding-top: 0.8rem;
+      margin-top: 0.5rem;
+    }
+    .cart-total span { display: block; font-size: 0.78rem; font-weight: 500; color: var(--texto-claro); text-align: right; }
+    .btn-whatsapp {
+      background: var(--exito);
+      color: var(--blanco);
+      border: none;
+      width: 100%;
+      padding: 0.9rem;
+      border-radius: 60px;
+      font-weight: 600;
+      font-size: 1.05rem;
+      margin-top: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      transition: var(--transicion);
+    }
+    .btn-whatsapp:hover { background: #1ebe5a; }
+    .btn-whatsapp:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    .carrito-vacio {
+      text-align: center;
+      padding: 2rem 0.5rem;
+      color: var(--texto-claro);
+    }
+    .carrito-vacio i { font-size: 2rem; color: var(--principal); display: block; margin-bottom: 0.6rem; }
+
+    /* ---------- TOAST ---------- */
+    .toast {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--secundario);
+      color: var(--principal-claro);
+      padding: 0.8rem 1.4rem;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 0.92rem;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.25);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease, transform 0.35s ease;
+      z-index: 3000;
+    }
+    .toast.visible {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    .toast i { color: var(--exito); }
+
+    @keyframes aparecerSoft {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
+    }
+
+    @media (max-width: 650px) {
+      .barra-opciones-wrapper { top: 58px; }
+      .barra-opciones { justify-content: flex-start; padding: 6px 8px; }
+      .btn-opcion { padding: 0.5rem 1rem; font-size: 0.88rem; }
+      .grid-cajas { grid-template-columns: repeat(2, 1fr); gap: 0.9rem; }
+      .caja-img { height: 130px; }
+      .intro-titulo { font-size: 2.2rem; }
+      .modal-card { padding: 1.3rem; }
+      .fila-doble { grid-template-columns: 1fr; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- PANTALLA INTRO -->
+  <div id="intro">
+    <div class="intro-card" id="introCard">
+      <div class="intro-logo">
+        <img src="logo.jpeg" alt="Logo Cajas Personalizadas" id="logoIntro">
+      </div>
+      <h1 class="intro-titulo">Cajas Personalizadas</h1>
+      <p class="intro-sub">
+        <i class="fas fa-sparkles"></i> Hechas a mano con amor. Elige tu diseño preferido o pídelo a tu gusto.
+      </p>
+      <button class="btn-entrar" id="btnEntrar">Explorar catálogo</button>
+    </div>
+  </div>
+
+  <!-- HEADER -->
+  <header class="header-fijo" id="headerFijo">
+    <div class="header-left">
+      <div class="logo-mini">
+        <img src="logo.jpeg" alt="Logo">
+      </div>
+      <span class="header-titulo">Cajas Personalizadas</span>
+    </div>
+    <button class="header-carrito" id="btnCarritoHeader">
+      <i class="fas fa-shopping-cart"></i> Carrito
+      <span class="badge-carrito" id="contadorCarrito">0</span>
+    </button>
+  </header>
+
+  <!-- CATÁLOGO -->
+  <main class="catalogo-wrapper" id="catalogoWrapper">
+
+    <!-- BARRA FLOTANTE DE BÚSQUEDA + CATEGORÍAS -->
+    <div class="barra-opciones-wrapper">
+      <div class="barra-busqueda" id="barraBusqueda">
+        <i class="fas fa-search"></i>
+        <input type="text" id="inputBusqueda" placeholder="Buscar caja por nombre...">
+        <button class="btn-limpiar-busqueda" id="btnLimpiarBusqueda"><i class="fas fa-times-circle"></i></button>
+      </div>
+      <nav class="barra-opciones" id="barraOpciones">
+        <button class="btn-opcion activo" data-cat="todos">
+          <i class="fas fa-th-large"></i> Todas
+        </button>
+        <button class="btn-opcion" data-cat="Aniversario">
+          <i class="fas fa-heart"></i> Aniversario
+        </button>
+        <button class="btn-opcion" data-cat="Con Visor">
+          <i class="fas fa-eye"></i> Con Visor
+        </button>
+        <button class="btn-opcion" data-cat="Diseño Libros">
+          <i class="fas fa-book-open"></i> Diseño Libros
+        </button>
+        <button class="btn-opcion" data-cat="Elegantes">
+          <i class="fas fa-crown"></i> Elegantes
+        </button>
+        <button class="btn-opcion" data-cat="Feliz cumpleaños">
+          <i class="fas fa-birthday-cake"></i> Feliz cumpleaños
+        </button>
+        <button class="btn-opcion" data-cat="Mas diseños">
+          <i class="fas fa-magic"></i> Mas diseños
+        </button>
+      </nav>
+    </div>
+
+    <p class="resultado-info" id="resultadoInfo"></p>
+
+    <!-- CONTENEDOR GRID DE PRODUCTOS -->
+    <div class="grid-cajas" id="gridCajas"></div>
+
+    <div class="seccion-estilo">
+      <h3><i class="fas fa-pencil-alt"></i> ¿Quieres tu propio estilo?</h3>
+      <p>Cuéntanos tu idea y creamos tu caja personalizada en medidas, materiales y vinil.</p>
+      <button class="btn-estilo" id="btnMandarEstilo"><i class="fas fa-paper-plane"></i> Mandar estilo</button>
+    </div>
+  </main>
+
+  <!-- MODAL PRODUCTO -->
+  <div class="modal-overlay" id="modalProducto">
+    <div class="modal-card">
+      <button class="cerrar" id="cerrarModalProducto" aria-label="Cerrar">&times;</button>
+      <h2 class="modal-titulo" id="modalNombreCaja">Caja Personalizada</h2>
+
+      <div class="imagen-compra" id="imagenCompraContainer">
+        <img src="" alt="Vista previa" id="imgCompra">
+      </div>
+
+      <div class="fila-doble">
+        <div class="campo">
+          <label>Color de la caja</label>
+          <select id="selectColorCaja">
+            <option value="Negro">Negro</option><option value="Blanco">Blanco</option>
+            <option value="Rojo">Rojo</option><option value="Azul">Azul</option>
+            <option value="Celeste">Celeste</option><option value="Rosa">Rosa</option>
+            <option value="Morado">Morado</option><option value="Amarillo">Amarillo</option>
+            <option value="Café">Café</option><option value="Verde">Verde</option>
+            <option value="Dorado">Dorado</option><option value="Plateado">Plateado</option>
+          </select>
+        </div>
+
+        <div class="campo">
+          <label>Color de cinta</label>
+          <select id="selectColorCinta">
+            <option value="Rojo">Rojo</option><option value="Azul">Azul</option>
+            <option value="Celeste">Celeste</option><option value="Negro">Negro</option>
+            <option value="Blanco">Blanco</option><option value="Rosa">Rosa</option>
+            <option value="Dorado">Dorado</option><option value="Plateado">Plateado</option>
+            <option value="Morado">Morado</option><option value="Amarillo">Amarillo</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="fila-doble">
+        <div class="campo">
+          <label>Material</label>
+          <select id="selectMaterial">
+            <option value="cartulina">Cartulina</option>
+            <option value="carton">Cartón gris</option>
+          </select>
+        </div>
+
+        <div class="campo">
+          <label>Medidas (cm)</label>
+          <select id="selectMedidas">
+            <option value="35x35x12">35x35 · altura 12</option>
+            <option value="35x30x12">35x30 · altura 12</option>
+            <option value="35x25x12">35x25 · altura 12</option>
+            <option value="30x30x12">30x30 · altura 12</option>
+            <option value="30x25x12">30x25 · altura 12</option>
+            <option value="30x20x12">30x20 · altura 12</option>
+            <option value="30x15x12">30x15 · altura 12</option>
+            <option value="25x25x10">25x25 · altura 10</option>
+            <option value="25x20x10">25x20 · altura 10</option>
+            <option value="20x20x10">20x20 · altura 10</option>
+            <option value="20x15x10">20x15 · altura 10</option>
+            <option value="15x15x10">15x15 · altura 10</option>
+            <option value="15x10x8">15x10 · altura 8</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="campo">
+        <label>Cantidad</label>
+        <div class="selector-cantidad">
+          <button type="button" id="btnMenosCantidad" aria-label="Restar">−</button>
+          <span id="cantidadSeleccionada">1</span>
+          <button type="button" id="btnMasCantidad" aria-label="Sumar">+</button>
+        </div>
+      </div>
+
+      <div class="campo campo-vinilo">
+        <label class="toggle-vinilo">
+          <input type="checkbox" id="checkVinilo">
+          <span>Agregar frase vinílica personalizada <strong>(+C$60)</strong></span>
+        </label>
+
+        <div class="vinilo-detalle" id="viniloDetalle">
+          <div class="campo">
+            <label>Texto de la frase</label>
+            <input type="text" id="inputFraseVinilo" maxlength="60" placeholder="Ej: Feliz Aniversario Mi Amor">
+            <div class="nota-caracteres"><span id="contadorCaracteresFrase">0</span>/60</div>
+          </div>
+          <div class="campo">
+            <label>Color del vinil</label>
+            <select id="selectColorVinilo">
+              <option value="Rojo">Rojo</option>
+              <option value="Negro">Negro</option>
+              <option value="Azul">Azul</option>
+              <option value="Dorado">Dorado</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="precio-grande" id="precioMostrado">
+        C$220
+        <small id="precioUnitarioNota"></small>
+      </div>
+
+      <button class="boton-agregar" id="btnAgregarCarrito">
+        <i class="fas fa-plus-circle"></i> Agregar al carrito
+      </button>
+    </div>
+  </div>
+
+  <!-- MODAL CARRITO -->
+  <div class="modal-overlay" id="modalCarrito">
+    <div class="modal-card">
+      <button class="cerrar" id="cerrarCarrito" aria-label="Cerrar">&times;</button>
+      <div class="carrito-header-fila">
+        <h2 style="font-size: 1.8rem; font-weight: 700; color: var(--secundario);">Tu carrito</h2>
+        <button class="btn-vaciar-carrito" id="btnVaciarCarrito"><i class="fas fa-trash-alt"></i> Vaciar</button>
+      </div>
+      <div id="listaCarrito" style="margin-top: 1rem;"></div>
+      <div class="cart-total" id="totalCarrito">Total: C$0</div>
+      <button class="btn-whatsapp" id="btnWhatsapp"><i class="fab fa-whatsapp"></i> Comprar por WhatsApp</button>
+    </div>
+  </div>
+
+  <!-- TOAST DE CONFIRMACIÓN -->
+  <div class="toast" id="toast"><i class="fas fa-check-circle"></i> <span id="toastTexto">Producto agregado</span></div>
+
+  <script>
+    (function() {
+      // BASE DE PRODUCTOS CON RUTAS LOCALES: Fotos/[Carpeta]/[archivo]
+      const PRODUCTOS = [
+        // ---------- ANIVERSARIO ----------
+        { id: 1, nombre: "Caja Feliz Aniversario Te Amo", cat: "Aniversario", img: "Fotos/Aniversario/1.jpeg" },
+        { id: 2, nombre: "Caja Para El Amor De Mi Vida", cat: "Aniversario", img: "Fotos/Aniversario/2.jpeg" },
+        { id: 3, nombre: "Caja Por Más Aniversarios A Tu Lado", cat: "Aniversario", img: "Fotos/Aniversario/3.jpeg" },
+        { id: 4, nombre: "Caja Aniversario Chocolates Daddy", cat: "Aniversario", img: "Fotos/Aniversario/4.jpeg" },
+        { id: 5, nombre: "Caja Sorpresa Ferrero & Nutella", cat: "Aniversario", img: "Fotos/Aniversario/5.jpeg" },
+        { id: 6, nombre: "Caja Feliz Aniversario con Peluche", cat: "Aniversario", img: "Fotos/Aniversario/6.jpeg" },
+        { id: 7, nombre: "Caja Aniversario Fecha Especial", cat: "Aniversario", img: "Fotos/Aniversario/7.jpeg" },
+        { id: 8, nombre: "Caja Dorada Espejo Aniversario", cat: "Aniversario", img: "Fotos/Aniversario/8.jpeg" },
+
+        // ---------- CON VISOR ----------
+        { id: 9, nombre: "Caja Visor Azul Marino Satinada", cat: "Con Visor", img: "Fotos/Con Visor/1.jpeg" },
+        { id: 10, nombre: "Caja Visor Blanca Minimalista", cat: "Con Visor", img: "Fotos/Con Visor/2.jpeg" },
+        { id: 11, nombre: "Caja Visor Negra Lazo Vino", cat: "Con Visor", img: "Fotos/Con Visor/3.jpeg" },
+        { id: 12, nombre: "Colección Cajas Visor Lateral", cat: "Con Visor", img: "Fotos/Con Visor/4.jpeg" },
+        { id: 13, nombre: "Caja Rígida Visor Love Forever", cat: "Con Visor", img: "Fotos/Con Visor/5.jpeg" },
+        { id: 14, nombre: "Caja Visor Floral Rosa Pastel", cat: "Con Visor", img: "Fotos/Con Visor/6.jpeg" },
+
+        // ---------- DISEÑO LIBROS ----------
+        { id: 15, nombre: "Torre Cajas Tipo Libro Rígidas", cat: "Diseño Libros", img: "Fotos/Diseño Libros/1.jpeg" },
+        { id: 16, nombre: "Caja Libro Joyero Bicolor", cat: "Diseño Libros", img: "Fotos/Diseño Libros/2.jpeg" },
+        { id: 17, nombre: "Caja Libro Azul Marino con Imán", cat: "Diseño Libros", img: "Fotos/Diseño Libros/3.jpeg" },
+        { id: 18, nombre: "Caja Libro Rough Linen Crema", cat: "Diseño Libros", img: "Fotos/Diseño Libros/4.jpeg" },
+        { id: 19, nombre: "Caja Libro Rosa Satinada Frontal", cat: "Diseño Libros", img: "Fotos/Diseño Libros/5.jpeg" },
+        { id: 20, nombre: "Caja Libro Profunda Negra Mate", cat: "Diseño Libros", img: "Fotos/Diseño Libros/6.jpeg" },
+        { id: 21, nombre: "Caja Libro Visor Corazón Rosa", cat: "Diseño Libros", img: "Fotos/Diseño Libros/7.jpeg" },
+
+        // ---------- ELEGANTES ----------
+        { id: 22, nombre: "Caja Negra Premium Moño Azul", cat: "Elegantes", img: "Fotos/Elegantes/1.jpeg" },
+        { id: 23, nombre: "Caja Blanca Taller Cinta Negra", cat: "Elegantes", img: "Fotos/Elegantes/2.jpeg" },
+        { id: 24, nombre: "Caja Celebrate The Moment Oro", cat: "Elegantes", img: "Fotos/Elegantes/3.jpeg" },
+        { id: 25, nombre: "Caja Bicolor Azul & Blanco Dije", cat: "Elegantes", img: "Fotos/Elegantes/4.jpeg" },
+        { id: 26, nombre: "Caja Cuadrada Blanca Moño Champán", cat: "Elegantes", img: "Fotos/Elegantes/5.jpeg" },
+        { id: 27, nombre: "Set Regalo Azul Real & Plata", cat: "Elegantes", img: "Fotos/Elegantes/6.jpeg" },
+
+        // ---------- FELIZ CUMPLEAÑOS ----------
+        { id: 28, nombre: "Caja Cumpleaños Rosas Rosa Mary", cat: "Feliz cumpleaños", img: "Fotos/Feliz cumpleaños/9.jpeg" },
+        { id: 29, nombre: "Caja Negra Flork Feliz Cumple", cat: "Feliz cumpleaños", img: "Fotos/Feliz cumpleaños/1.jpeg" },
+        { id: 30, nombre: "Caja Blanca Snacks & Fotos Cumple", cat: "Feliz cumpleaños", img: "Fotos/Feliz cumpleaños/2.jpeg" },
+        { id: 31, nombre: "Caja Feliz Cumpleaños Mi Amor", cat: "Feliz cumpleaños", img: "Fotos/Feliz cumpleaños/3.jpeg" },
+        { id: 32, nombre: "Caja Gigante Happy Birthday Estrellas", cat: "Feliz cumpleaños", img: "Fotos/Feliz cumpleaños/4.jpeg" },
+        { id: 33, nombre: "Caja Rosas Rojas Ferrero Cumpleaños", cat: "Feliz cumpleaños", img: "Fotos/Feliz cumpleaños/5.jpeg" },
+        { id: 34, nombre: "Caja Happy Birthday Letras Doradas", cat: "Feliz cumpleaños", img: "Fotos/Feliz cumpleaños/6.jpeg" },
+        { id: 35, nombre: "Caja Blanca Lazo Fucsia Cumpleaños", cat: "Feliz cumpleaños", img: "Fotos/Feliz cumpleaños/8.jpeg" },
+
+        // ---------- MAS DISEÑOS ----------
+        { id: 37, nombre: "Caja Cúbica Negra Best Wishes", cat: "Mas diseños", img: "Fotos/Mas diseños/1.jpeg" },
+        { id: 38, nombre: "Caja Cuadrada Blanca Lazo Púrpura", cat: "Mas diseños", img: "Fotos/Mas diseños/2.jpeg" },
+        { id: 39, nombre: "Caja Libro Lila Corazón Dorado", cat: "Mas diseños", img: "Fotos/Mas diseños/3.jpeg" },
+        { id: 40, nombre: "Caja Base Azul Tapa Blanca y Lazo", cat: "Mas diseños", img: "Fotos/Mas diseños/4.jpeg" },
+        { id: 41, nombre: "Caja Negra Lazo Celeste en Cruz", cat: "Mas diseños", img: "Fotos/Mas diseños/5.jpeg" },
+        { id: 42, nombre: "Caja Alargada Negra Moño Champán", cat: "Mas diseños", img: "Fotos/Mas diseños/6.jpeg" },
+        { id: 43, nombre: "Caja Negra con Lazo Rojo Clásico", cat: "Mas diseños", img: "Fotos/Mas diseños/7.jpeg" },
+        { id: 44, nombre: "Caja Kraft Minimal con Lazo Fucsia", cat: "Mas diseños", img: "Fotos/Mas diseños/8.jpeg" },
+        { id: 45, nombre: "Caja Alguien Muy Especial Dorado", cat: "Mas diseños", img: "Fotos/Mas diseños/9.jpeg" },
+        { id: 46, nombre: "Caja Blanca Lazo Rojo con Corazón", cat: "Mas diseños", img: "Fotos/Mas diseños/10.jpeg" },
+        { id: 47, nombre: "Caja Felices 20+21 Personalizada", cat: "Mas diseños", img: "Fotos/Mas diseños/11.jpeg" },
+        { id: 48, nombre: "Caja Roja Temática Snoopy", cat: "Mas diseños", img: "Fotos/Mas diseños/12.jpeg" },
+        { id: 49, nombre: "Caja Negra Temática Hot Wheels", cat: "Mas diseños", img: "Fotos/Mas diseños/13.jpeg" },
+        { id: 50, nombre: "Caja Blanca con Viruta y Lazo Rosa", cat: "Mas diseños", img: "Fotos/Mas diseños/14.jpeg" },
+        { id: 51, nombre: "Caja Cubo Cumpleaños Logo & Lazo", cat: "Mas diseños", img: "Fotos/Mas diseños/15.jpeg" },
+        { id: 52, nombre: "Caja Regalos Especiales Cinta Oro", cat: "Mas diseños", img: "Fotos/Mas diseños/16.jpeg" },
+        { id: 53, nombre: "Caja Blanca Lazo Azul Rey", cat: "Mas diseños", img: "Fotos/Mas diseños/17.jpeg" },
+        { id: 54, nombre: "Caja Amor Bonito Flork y Corazones", cat: "Mas diseños", img: "Fotos/Mas diseños/18.jpeg" },
+        { id: 55, nombre: "Caja Sorpresa Te Quiero Dulces", cat: "Mas diseños", img: "Fotos/Mas diseños/19.jpeg" }
+      ];
+
+      // TABLA DE PRECIOS BASE
+      const PRECIOS = {
+        cartulina: {
+          '35x35x12': 220, '35x30x12': 210, '35x25x12': 210, '30x30x12': 200,
+          '30x25x12': 190, '30x20x12': 180, '30x15x12': 170, '25x25x10': 160,
+          '25x20x10': 140, '20x20x10': 130, '20x15x10': 120, '15x15x10': 110,
+          '15x10x8': 100
+        },
+        carton: {
+          '35x35x12': 400, '35x30x12': 380, '35x25x12': 340, '30x30x12': 310,
+          '30x25x12': 290, '30x20x12': 280, '30x15x12': 260, '25x25x10': 240,
+          '25x20x10': 220, '20x20x10': 200, '20x15x10': 190, '15x15x10': 180,
+          '15x10x8': 170
+        }
+      };
+
+      // RECARGO ADICIONAL POR CATEGORÍA (se suma al precio base de esa categoría)
+      const RECARGOS_CATEGORIA = {
+        'Con Visor': 70
+      };
+
+      const NUMERO_WHATSAPP = '84003958';
+      const COSTO_VINILO = 60;
+
+      let carrito = [];
+      let productoSeleccionado = null;
+      let categoriaActual = "todos";
+      let terminoBusqueda = "";
+      let cantidadActual = 1;
+      let toastTimeout = null;
+
+      // Referencias DOM
+      const intro = document.getElementById('intro');
+      const introCard = document.getElementById('introCard');
+      const btnEntrar = document.getElementById('btnEntrar');
+      const headerFijo = document.getElementById('headerFijo');
+      const catalogoWrapper = document.getElementById('catalogoWrapper');
+      const gridCajas = document.getElementById('gridCajas');
+      const contadorCarrito = document.getElementById('contadorCarrito');
+      const resultadoInfo = document.getElementById('resultadoInfo');
+
+      const inputBusqueda = document.getElementById('inputBusqueda');
+      const barraBusqueda = document.getElementById('barraBusqueda');
+      const btnLimpiarBusqueda = document.getElementById('btnLimpiarBusqueda');
+
+      const modalProducto = document.getElementById('modalProducto');
+      const modalNombreCaja = document.getElementById('modalNombreCaja');
+      const imgCompra = document.getElementById('imgCompra');
+      const selectColorCaja = document.getElementById('selectColorCaja');
+      const selectColorCinta = document.getElementById('selectColorCinta');
+      const selectMaterial = document.getElementById('selectMaterial');
+      const selectMedidas = document.getElementById('selectMedidas');
+      const precioMostrado = document.getElementById('precioMostrado');
+      const precioUnitarioNota = document.getElementById('precioUnitarioNota');
+      const cantidadSeleccionada = document.getElementById('cantidadSeleccionada');
+      const btnMenosCantidad = document.getElementById('btnMenosCantidad');
+      const btnMasCantidad = document.getElementById('btnMasCantidad');
+      const checkVinilo = document.getElementById('checkVinilo');
+      const viniloDetalle = document.getElementById('viniloDetalle');
+      const inputFraseVinilo = document.getElementById('inputFraseVinilo');
+      const selectColorVinilo = document.getElementById('selectColorVinilo');
+      const contadorCaracteresFrase = document.getElementById('contadorCaracteresFrase');
+      const btnAgregarCarrito = document.getElementById('btnAgregarCarrito');
+
+      const modalCarrito = document.getElementById('modalCarrito');
+      const listaCarrito = document.getElementById('listaCarrito');
+      const totalCarrito = document.getElementById('totalCarrito');
+      const btnWhatsapp = document.getElementById('btnWhatsapp');
+      const btnVaciarCarrito = document.getElementById('btnVaciarCarrito');
+
+      const toast = document.getElementById('toast');
+      const toastTexto = document.getElementById('toastTexto');
+
+      // ---------- UTILIDADES ----------
+      function formatoDinero(valor) {
+        return 'C$' + Number(valor).toLocaleString('es-NI');
+      }
+
+      function mostrarToast(mensaje) {
+        toastTexto.textContent = mensaje;
+        toast.classList.add('visible');
+        clearTimeout(toastTimeout);
+        toastTimeout = setTimeout(() => toast.classList.remove('visible'), 2200);
+      }
+
+      function normalizar(texto) {
+        return texto.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+      }
+
+      // ---------- PRECIO DEL PRODUCTO ACTUAL ----------
+      function recargoCategoriaActual() {
+        if (!productoSeleccionado) return 0;
+        return RECARGOS_CATEGORIA[productoSeleccionado.cat] || 0;
+      }
+
+      function precioUnitarioActual() {
+        const material = selectMaterial.value;
+        const medida = selectMedidas.value;
+        const base = PRECIOS[material]?.[medida] || 0;
+        return base + recargoCategoriaActual();
+      }
+
+      function costoViniloActual() {
+        return checkVinilo.checked ? COSTO_VINILO : 0;
+      }
+
+      function actualizarPrecio() {
+        const unitario = precioUnitarioActual() + costoViniloActual();
+        const totalLinea = unitario * cantidadActual;
+        precioMostrado.childNodes[0].nodeValue = formatoDinero(totalLinea) + ' ';
+        const partes = [];
+        if (cantidadActual > 1) partes.push(`${formatoDinero(unitario)} c/u × ${cantidadActual}`);
+        if (recargoCategoriaActual() > 0) partes.push(`incluye recargo por visor (+${formatoDinero(recargoCategoriaActual())})`);
+        if (checkVinilo.checked) partes.push(`incluye frase vinílica (+${formatoDinero(COSTO_VINILO)})`);
+        precioUnitarioNota.textContent = partes.join(' · ');
+        return unitario;
+      }
+
+      function actualizarCantidadUI() {
+        cantidadSeleccionada.textContent = cantidadActual;
+        btnMenosCantidad.disabled = cantidadActual <= 1;
+        actualizarPrecio();
+      }
+
+      function actualizarEstadoBotonAgregar() {
+        const necesitaFrase = checkVinilo.checked && inputFraseVinilo.value.trim() === '';
+        btnAgregarCarrito.disabled = necesitaFrase;
+        btnAgregarCarrito.innerHTML = necesitaFrase
+          ? '<i class="fas fa-pen"></i> Escribe la frase para el vinil'
+          : '<i class="fas fa-plus-circle"></i> Agregar al carrito';
+      }
+
+      checkVinilo.addEventListener('change', function() {
+        viniloDetalle.classList.toggle('abierto', this.checked);
+        if (this.checked) {
+          setTimeout(() => inputFraseVinilo.focus(), 200);
+        }
+        actualizarPrecio();
+        actualizarEstadoBotonAgregar();
+      });
+
+      inputFraseVinilo.addEventListener('input', function() {
+        contadorCaracteresFrase.textContent = this.value.length;
+        actualizarEstadoBotonAgregar();
+      });
+
+      // ---------- CARRITO ----------
+      function guardarCantidadEnStock() {
+        return carrito.reduce((sum, item) => sum + item.cantidad, 0);
+      }
+
+      function renderCarrito() {
+        contadorCarrito.textContent = guardarCantidadEnStock();
+
+        if (carrito.length === 0) {
+          listaCarrito.innerHTML = `
+            <div class="carrito-vacio">
+              <i class="fas fa-box-open"></i>
+              Aún no has agregado cajas.
+            </div>`;
+          totalCarrito.innerHTML = `Total: ${formatoDinero(0)}`;
+          btnWhatsapp.disabled = true;
+          return;
+        }
+
+        btnWhatsapp.disabled = false;
+        let html = '';
+        let total = 0;
+        let totalUnidades = 0;
+
+        carrito.forEach((item, index) => {
+          const subtotal = item.precio * item.cantidad;
+          total += subtotal;
+          totalUnidades += item.cantidad;
+          html += `
+            <div class="cart-item">
+              <div class="info">
+                <strong>${item.nombre}</strong>
+                <div class="detalle">Color: ${item.colorCaja} · Cinta: ${item.colorCinta}</div>
+                <div class="detalle">${item.material} · ${item.medida}</div>
+                ${item.vinilo ? `<div class="detalle">Vinil "${item.vinilo.frase}" · Color: ${item.vinilo.color}</div>` : ''}
+                <div class="subtotal">${formatoDinero(item.precio)} c/u · Subtotal: ${formatoDinero(subtotal)}</div>
+              </div>
+              <div class="acciones">
+                <button onclick="cambiarCantidad(${index}, -1)" aria-label="Restar">−</button>
+                <span>${item.cantidad}</span>
+                <button onclick="cambiarCantidad(${index}, 1)" aria-label="Sumar">+</button>
+                <button class="btn-eliminar" onclick="eliminarDelCarrito(${index})" aria-label="Eliminar"><i class="fas fa-trash-alt"></i></button>
+              </div>
+            </div>
+          `;
+        });
+
+        listaCarrito.innerHTML = html;
+        totalCarrito.innerHTML = `Total: ${formatoDinero(total)}<span>${totalUnidades} caja${totalUnidades === 1 ? '' : 's'} en el carrito</span>`;
+      }
+
+      window.cambiarCantidad = function(index, delta) {
+        if (!carrito[index]) return;
+        const nuevaCantidad = carrito[index].cantidad + delta;
+        if (nuevaCantidad > 0) {
+          carrito[index].cantidad = nuevaCantidad;
+        } else {
+          carrito.splice(index, 1);
+        }
+        renderCarrito();
+      };
+
+      window.eliminarDelCarrito = function(index) {
+        carrito.splice(index, 1);
+        renderCarrito();
+      };
+
+      btnVaciarCarrito.addEventListener('click', function() {
+        if (carrito.length === 0) return;
+        if (confirm('¿Vaciar todo el carrito?')) {
+          carrito = [];
+          renderCarrito();
+        }
+      });
+
+      // ---------- FILTRADO DEL CATÁLOGO ----------
+      function productosFiltrados() {
+        let lista = categoriaActual === "todos"
+          ? PRODUCTOS
+          : PRODUCTOS.filter(p => p.cat === categoriaActual);
+
+        if (terminoBusqueda.trim() !== '') {
+          const termino = normalizar(terminoBusqueda.trim());
+          lista = lista.filter(p => normalizar(p.nombre).includes(termino));
+        }
+        return lista;
+      }
+
+      function renderCatalogo() {
+        const filtrados = productosFiltrados();
+        gridCajas.innerHTML = '';
+
+        if (filtrados.length === 0) {
+          gridCajas.innerHTML = `
+            <div class="sin-resultados">
+              <i class="fas fa-box-open"></i>
+              No encontramos cajas con esa búsqueda.<br>Prueba con otro término o categoría.
+            </div>`;
+        } else {
+          filtrados.forEach((prod, index) => {
+            const card = document.createElement('div');
+            card.className = 'caja-card';
+            card.style.animationDelay = `${(index % 12) * 0.045}s`;
+            card.innerHTML = `
+              <div>
+                <div class="caja-img">
+                  <img src="${prod.img}" alt="${prod.nombre}" loading="lazy" onerror="this.src='logo.jpeg'">
+                </div>
+                <div class="caja-tag">${prod.cat}</div>
+                <div class="caja-nombre">${prod.nombre}</div>
+              </div>
+              <button class="btn-ver" onclick="abrirProducto(${prod.id})">Personalizar</button>
+            `;
+            gridCajas.appendChild(card);
+          });
+        }
+
+        resultadoInfo.textContent = `${filtrados.length} diseño${filtrados.length === 1 ? '' : 's'} disponible${filtrados.length === 1 ? '' : 's'}`;
+      }
+
+      window.abrirProducto = function(id) {
+        productoSeleccionado = PRODUCTOS.find(p => p.id === id);
+        if (!productoSeleccionado) return;
+
+        modalNombreCaja.textContent = productoSeleccionado.nombre;
+        imgCompra.src = productoSeleccionado.img;
+        imgCompra.onerror = () => { imgCompra.src = 'logo.jpeg'; };
+
+        selectColorCaja.selectedIndex = 0;
+        selectColorCinta.selectedIndex = 0;
+        selectMaterial.value = 'cartulina';
+        selectMedidas.value = '35x35x12';
+        cantidadActual = 1;
+        checkVinilo.checked = false;
+        viniloDetalle.classList.remove('abierto');
+        inputFraseVinilo.value = '';
+        contadorCaracteresFrase.textContent = '0';
+        selectColorVinilo.selectedIndex = 0;
+        actualizarCantidadUI();
+        actualizarEstadoBotonAgregar();
+        modalProducto.classList.add('abierto');
+      };
+
+      // ---------- BÚSQUEDA ----------
+      inputBusqueda.addEventListener('input', function() {
+        terminoBusqueda = this.value;
+        barraBusqueda.classList.toggle('con-texto', terminoBusqueda.length > 0);
+        renderCatalogo();
+      });
+      btnLimpiarBusqueda.addEventListener('click', function() {
+        inputBusqueda.value = '';
+        terminoBusqueda = '';
+        barraBusqueda.classList.remove('con-texto');
+        renderCatalogo();
+      });
+
+      // ---------- FILTROS DE CATEGORÍA ----------
+      document.querySelectorAll('.btn-opcion').forEach(btn => {
+        btn.addEventListener('click', function() {
+          document.querySelectorAll('.btn-opcion').forEach(b => b.classList.remove('activo'));
+          this.classList.add('activo');
+          categoriaActual = this.dataset.cat;
+          renderCatalogo();
+        });
+      });
+
+      // ---------- MODALES ----------
+      function cerrarTodosLosModales() {
+        modalProducto.classList.remove('abierto');
+        modalCarrito.classList.remove('abierto');
+      }
+
+      document.getElementById('cerrarModalProducto').addEventListener('click', () => modalProducto.classList.remove('abierto'));
+      modalProducto.addEventListener('click', (e) => { if (e.target === modalProducto) modalProducto.classList.remove('abierto'); });
+
+      document.getElementById('btnCarritoHeader').addEventListener('click', () => {
+        renderCarrito();
+        modalCarrito.classList.add('abierto');
+      });
+      document.getElementById('cerrarCarrito').addEventListener('click', () => modalCarrito.classList.remove('abierto'));
+      modalCarrito.addEventListener('click', (e) => { if (e.target === modalCarrito) modalCarrito.classList.remove('abierto'); });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') cerrarTodosLosModales();
+      });
+
+      selectMaterial.addEventListener('change', actualizarPrecio);
+      selectMedidas.addEventListener('change', actualizarPrecio);
+
+      btnMenosCantidad.addEventListener('click', () => {
+        if (cantidadActual > 1) {
+          cantidadActual--;
+          actualizarCantidadUI();
+        }
+      });
+      btnMasCantidad.addEventListener('click', () => {
+        cantidadActual++;
+        actualizarCantidadUI();
+      });
+
+      // ---------- AGREGAR AL CARRITO ----------
+      btnAgregarCarrito.addEventListener('click', function() {
+        if (!productoSeleccionado) return;
+        if (checkVinilo.checked && inputFraseVinilo.value.trim() === '') {
+          actualizarEstadoBotonAgregar();
+          inputFraseVinilo.focus();
+          return;
+        }
+
+        const colorCaja = selectColorCaja.value;
+        const colorCinta = selectColorCinta.value;
+        const material = selectMaterial.options[selectMaterial.selectedIndex].text;
+        const medida = selectMedidas.options[selectMedidas.selectedIndex].text;
+        const precio = actualizarPrecio();
+        const vinilo = checkVinilo.checked
+          ? { frase: inputFraseVinilo.value.trim(), color: selectColorVinilo.value }
+          : null;
+
+        // Una frase vinílica es única por caja, así que solo se agrupan cajas idénticas sin vinil
+        const existente = !vinilo && carrito.find(item =>
+          item.id === productoSeleccionado.id &&
+          item.colorCaja === colorCaja &&
+          item.colorCinta === colorCinta &&
+          item.material === material &&
+          item.medida === medida &&
+          !item.vinilo
+        );
+
+        if (existente) {
+          existente.cantidad += cantidadActual;
+        } else {
+          carrito.push({
+            id: productoSeleccionado.id,
+            nombre: productoSeleccionado.nombre,
+            colorCaja,
+            colorCinta,
+            material,
+            medida,
+            vinilo,
+            precio,
+            cantidad: cantidadActual
+          });
+        }
+
+        renderCarrito();
+        modalProducto.classList.remove('abierto');
+        mostrarToast(`${productoSeleccionado.nombre} agregada al carrito`);
+
+        contadorCarrito.style.transform = 'scale(1.35)';
+        setTimeout(() => contadorCarrito.style.transform = 'scale(1)', 220);
+      });
+
+      // ---------- INTRO CON EFECTO DE RESPLANDOR ----------
+      btnEntrar.addEventListener('click', function(evento) {
+        // Resplandor expansivo que nace desde el botón
+        const rect = btnEntrar.getBoundingClientRect();
+        const flash = document.createElement('div');
+        flash.className = 'flash-resplandor';
+        flash.style.left = (rect.left + rect.width / 2) + 'px';
+        flash.style.top = (rect.top + rect.height / 2) + 'px';
+        document.body.appendChild(flash);
+        requestAnimationFrame(() => flash.classList.add('activo'));
+
+        btnEntrar.classList.add('pulso');
+        introCard.classList.add('resplandor-card');
+
+        setTimeout(() => {
+          intro.classList.add('hidden');
+          headerFijo.classList.add('visible');
+          catalogoWrapper.classList.add('visible');
+          renderCatalogo();
+        }, 480);
+
+        setTimeout(() => flash.remove(), 900);
+      });
+
+      // ---------- MANDAR DISEÑO PROPIO ----------
+      document.getElementById('btnMandarEstilo').addEventListener('click', function() {
+        const mensaje = '¡Hola! Quiero mandar mi propio diseño de caja personalizada.';
+        window.open(`https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(mensaje)}`, '_blank');
+      });
+
+      // ---------- CHECKOUT POR WHATSAPP ----------
+      btnWhatsapp.addEventListener('click', function() {
+        if (carrito.length === 0) {
+          mostrarToast('Agrega al menos una caja antes de continuar');
+          return;
+        }
+        let mensaje = '¡Hola! Quiero hacer este pedido personalizado:\n\n';
+        let total = 0;
+        carrito.forEach((item, i) => {
+          const subtotal = item.precio * item.cantidad;
+          total += subtotal;
+          mensaje += `${i + 1}) ${item.nombre} (x${item.cantidad})\n  - Material: ${item.material}\n  - Medida: ${item.medida}\n  - Caja: ${item.colorCaja} | Cinta: ${item.colorCinta}\n`;
+          if (item.vinilo) {
+            mensaje += `  - Frase vinílica: "${item.vinilo.frase}" (color ${item.vinilo.color}) (+${formatoDinero(COSTO_VINILO)} c/u)\n`;
+          }
+          mensaje += `  - Subtotal: ${formatoDinero(subtotal)}\n\n`;
+        });
+        mensaje += `TOTAL ESTIMADO: ${formatoDinero(total)}`;
+        window.open(`https://wa.me/${NUMERO_WHATSAPP}?text=${encodeURIComponent(mensaje)}`, '_blank');
+      });
+
+      // Estado inicial
+      renderCarrito();
+    })();
+  </script>
+</body>
+</html>
